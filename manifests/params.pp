@@ -35,14 +35,14 @@ class mcollective::params {
   }
 
   # Package and service names
-  $package_name = $::osfamily ? {
+  $os_package_name = $::osfamily ? {
     /(?i-mx:redhat)/  => 'mcollective',
     /(?i-mx:debian)/  => 'mcollective',
     /(?i-mx:freebsd)/ => 'sysutils/mcollective',
     default           => 'mcollective',
   }
 
-  $client_package_name = $::osfamily ? {
+  $os_client_package_name = $::osfamily ? {
     /(?i-mx:redhat)/  => 'mcollective-client',
     /(?i-mx:debian)/  => 'mcollective-client',
     /(?i-mx:freebsd)/ => 'sysutils/mcollective-client',
@@ -57,12 +57,14 @@ class mcollective::params {
   }
 
   if versioncmp($::clientversion, '4.0.0') < 0 {
+    $package_name = $os_package_name
+    $client_package_name = $os_client_package_name
     $manage_package = true
   }
   else {
     # In Puppet 4 mcollective is bundled into puppet-agent
-    #$package_name = 'puppet-agent'
-    #$client_package_name = 'puppet-agent'
+    $package_name = 'puppet-agent'
+    $client_package_name = 'puppet-agent'
     $manage_package = false
   }
 
