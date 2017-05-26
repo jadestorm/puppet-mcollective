@@ -61,8 +61,8 @@ class mcollective::params {
   }
   else {
     # In Puppet 4 mcollective is bundled into puppet-agent
-    $package_name = 'puppet-agent'
-    $client_package_name = 'puppet-agent'
+    #$package_name = 'puppet-agent'
+    #$client_package_name = 'puppet-agent'
     $manage_package = false
   }
 
