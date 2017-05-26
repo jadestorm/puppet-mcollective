@@ -56,6 +56,16 @@ class mcollective::params {
     default           => 'mcollective-client',
   }
 
+  if versioncmp($::clientversion, '4.0.0') < 0 {
+    $manage_package = true
+  }
+  else {
+    # In Puppet 4 mcollective is bundled into puppet-agent
+    $package_name = 'puppet-agent'
+    $client_package_name = 'puppet-agent'
+    $manage_package = false
+  }
+
   # Logfile locations (all platforms seem identical for this for now)
   $logfile = '/var/log/mcollective.log'
 

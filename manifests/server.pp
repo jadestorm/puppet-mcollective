@@ -143,6 +143,7 @@ class mcollective::server(
   $service                      = $mcollective::params::service_name,
   $libdir                       = $mcollective::params::libdir,
   $etcdir                       = $mcollective::etcdir,
+  $manage_package               = $mcollective::params::manage_package,
 
   # Connector settings
   # These values can be overridden for a given server in Hiera
@@ -185,10 +186,12 @@ class mcollective::server(
   # Ensure the facts cronjob is set up or removed
   include mcollective::facts::cronjob
 
-  # Now install the packages
-  package { $package:
-    ensure => $version,
-    notify => Service[ $service ],
+  if $manage_package {
+    # Now install the packages
+    package { $package:
+      ensure => $version,
+      notify => Service[ $service ],
+    }
   }
 
   file { "${etcdir}/server.cfg":
